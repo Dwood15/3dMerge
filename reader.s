@@ -40,11 +40,11 @@ chunk_read_amount:
 file_size_location:
 	.word maxFileSize
 .text
-//.global _load_file
-//_load_file:
+.global _load_file
+_load_file:
 
-.global _start
-_start:
+//.global _start
+//_start:
 	ldr r1, =maxFileSize
 	bl _mmap
 	push {r0} //Save the memory pointer on stack
@@ -57,7 +57,7 @@ _start:
 	svc #0 //Open the file for writing/reading
 
 	cmp r0, #-1 //Did we fail in opening the file?
-	beq skip
+	beq rskip
 	push {r0}
 
 	//r4 so no register saving worries.
@@ -78,7 +78,7 @@ close:
 	mov r7, #CLOSE
 	svc #0
 
-skip:
+rskip:
 	mov r7, #1
 	svc #0
 	bx lr

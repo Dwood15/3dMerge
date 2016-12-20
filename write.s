@@ -15,10 +15,10 @@
 .set CLOSE, 6
 
 .data
-//filename:
-//	.asciz "to_write.jms"
-//to_write:
-//	.ascii "Writing to file\n"
+filename:
+	.asciz "to_write.jms"
+to_print_text_write_file:
+	.ascii "Writing to file\n"
 
 .text
 .global _write_file
@@ -31,7 +31,7 @@ _write_file:
 	svc #0 //Open the file for writing/reading
 
 	cmp r0, #-1 //Did we fail in opening the file?
-	beq skip
+	beq wskip
 	push {r0}
 
 write:
@@ -45,7 +45,7 @@ close:
 	mov r7, #CLOSE
 	svc #0
 
-skip:
+wskip:
 	mov r7, #1
 	svc #0
 	bx lr

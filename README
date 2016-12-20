@@ -5,7 +5,7 @@ I couldn't get everything plugged together in time, so here's what I had working
 
 All the D-Level proficiencies were working, some C-level, and I needed to glue it all together. I probably won't have time to finish them before grades are due, so here's what I have for now.
 
-With another 2-3 days I bet I could finish this project to 100%.
+With another week I bet I could finish this project to 100%.
 
 This should take two files (even two exact same files), load them into distinct sections of memory, and then try and merge them by unique matching region ids 
 

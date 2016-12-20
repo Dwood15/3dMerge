@@ -52,7 +52,7 @@ end:
 .global main
 main:
   ldr r1, =firstFile
-  bx _load_file
+  bl _load_file
 
 //Some string stuff...
   ldr r1, addr_return
