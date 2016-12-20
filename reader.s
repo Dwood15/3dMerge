@@ -21,8 +21,8 @@
 //	.ascii "Writing to file\n"
 
 .text
-.global _write_file
-_write_file:
+.global _load_file
+_load_file:
 //TODO: Save all callee-save registers
 	ldr r0, =filename
 	mov r1, #(O_WRONLY)
@@ -34,10 +34,10 @@ _write_file:
 	beq skip
 	push {r0}
 
-write:
+read:
 	ldr r1, =to_print_text_write_file
-	mov r2, #17
-	mov r7, #WRITE
+	mov r2, #24
+	mov r7, #READ
 	svc #0
 
 close:
