@@ -22,17 +22,38 @@ chunk_read_amount:
 file_size_location:
 	.word maxFileSize
 .text
-.global _load_file
-	_load_file:
+//.global _load_file
+//	_load_file:
+.global _start
+	_start:
 	ldr r1, =maxFileSize
+	ldr r1, [r1] //Ensure value is in register
+	mov r9, r1
+
 	bl _mmap
-	//Save the returned memory location at =pointer
-	//_mmap returns address in r1.
 	ldr r2, =pointer
-	str r1, [r2]
+	str r0, [r2]
+
+        mov r4, r0
+        mov r2, #0
+        mov r0, #3
+.Loop:
+//store r0 in [r4], then progress one
+        strb r0, [r4], #1
+        add r2, r2, #1
+//^^ Store r0 in r4, then increment r4 by one
+.condition:
+        cmp r2, r9
+        blt .Loop
+	ldr r2, [r1]
+	//Save the returned memory location at =pointer
+	//_mmap returns address in r0.
+	ldr r2, =pointer
+	str r0, [r2]
 
 
 //TODO: Save all callee-save registers
+_read_file:
 	ldr r0, =filename
 	mov r1, #(O_RDONLY)
 	mov r2, #(S_IRUSR | S_IWUSR)

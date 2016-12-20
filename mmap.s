@@ -18,8 +18,11 @@ pointer:
 //r1 is LENGTH, ENSURE THAT r1 is passed!
 .global _mmap
 _mmap:
+//.global _start
+//	_start:
 	mov r7, #MMAP2
 	mov r0, #0
+//	mov r1, #4096
 //	mov r1, =length
 	mov r2, #(PROC_READ | PROC_WRITE)
 	mov r3, #(MAP_ANONYMOUS | MAP_PRIVATE)
@@ -33,20 +36,14 @@ _mmap:
 //return to calling function - the memory pointer is in r0
 	bx lr
 
-//string stuff
-//	mov r4, r0
-//	mov r0, #'0'
-//.Loop:
-//	strb r0, [r4], #1
-//^^ Store r0 in r4, then increment r4 by one
-
+//MUNMAP.s
 //	mov r7, #MUNMAP
 //	ldr r0, =pointer
 //	ldr r0, [r0]
 //	ldr r1, =length
 //	ldr r1, [r1]
 //	svc #0
-
+//.exit
 //	mov r7, #EXIT
 //	svc #0
 
