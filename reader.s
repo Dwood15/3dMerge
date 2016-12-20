@@ -1,32 +1,14 @@
 //From in-class presentation.
 .set O_RDONLY, 0
-.set O_CREAT, 64
-
 .set S_IRUSR, 0400
 .set S_IWUSR, 0200
-
-.set STDIN, 0
-.set STDOUT, 1
-
 .set READ, 3
-.set WRITE, 4
 .set OPEN, 5
 .set CLOSE, 6
-
-.set EXIT, 1
-.set MMAP2, 192
-.set MUNMAP, 91
-
-.set PROC_READ, 1
-.set PROC_WRITE, 2
-.set MAP_PRIVATE, 2
-.set MAP_ANONYMOUS, 32
 
 .data
 filename:
 	.asciz "to_write.jms"
-to_read:
-	.skip 4096
 pointer:
 	.word 0
 //Completely arbitrary file size max for now.
@@ -41,13 +23,14 @@ file_size_location:
 	.word maxFileSize
 .text
 .global _load_file
-_load_file:
-
-//.global _start
-//_start:
+	_load_file:
 	ldr r1, =maxFileSize
 	bl _mmap
-	push {r0} //Save the memory pointer on stack
+	//Save the returned memory location at =pointer
+	//_mmap returns address in r1.
+	ldr r2, =pointer
+	str r1, [r2]
+
 
 //TODO: Save all callee-save registers
 	ldr r0, =filename
@@ -60,18 +43,22 @@ _load_file:
 	beq rskip
 	push {r0}
 
-	//r4 so no register saving worries.
+	//r5 so no register saving worries.
 	//I'm lazy.
-	mov r4, #0
+	ldr r1, =pointer
+	str r0, [r1]
+	mov r4, r0
 
+	mov r0, #0
 read:
-	ldr r1, =to_read
-	ldr r2, =chunk_read_amount
+	ldr r1, =chunk_read_amount
 	mov r7, #READ
 	svc #0
 //While #READ returns > 0 bytes, we loop
+condition:
 	cmp r0, #0
 	bgt read
+
 
 close:
 	pop {r0} //The file handle.

@@ -30,7 +30,6 @@ _mmap:
 	ldr r1, =pointer
 //store r0 at address of r1
 	str r0, [r1]
-
 //return to calling function - the memory pointer is in r0
 	bx lr
 
