@@ -27,12 +27,28 @@ filename:
 	.asciz "to_write.jms"
 to_read:
 	.skip 4096
+pointer:
+	.word 0
+//Completely arbitrary file size max for now.
+//Must be a power of two, iirc.
+maxFileSize:
+	.word 4096
+//c_r_a must be a multple of maxFileSize
+chunk_read_amount:
+	.word 48
+
+file_size_location:
+	.word maxFileSize
 .text
 //.global _load_file
 //_load_file:
 
 .global _start
 _start:
+	ldr r1, =maxFileSize
+	bl _mmap
+	push {r0} //Save the memory pointer on stack
+
 //TODO: Save all callee-save registers
 	ldr r0, =filename
 	mov r1, #(O_RDONLY)
@@ -44,11 +60,18 @@ _start:
 	beq skip
 	push {r0}
 
+	//r4 so no register saving worries.
+	//I'm lazy.
+	mov r4, #0
+
 read:
 	ldr r1, =to_read
-	mov r2, #48
+	ldr r2, =chunk_read_amount
 	mov r7, #READ
 	svc #0
+//While #READ returns > 0 bytes, we loop
+	cmp r0, #0
+	bgt read
 
 close:
 	pop {r0} //The file handle.

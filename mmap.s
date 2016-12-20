@@ -1,4 +1,3 @@
-//From class example
 .set STDOUT, 1
 
 .set EXIT, 1
@@ -15,47 +14,40 @@
 .data
 pointer:
 	.word 0
-length:
-	.word 4096
-
 .text
-.global _start
-_start:
+//r1 is LENGTH, ENSURE THAT r1 is passed!
+.global _mmap
+_mmap:
 	mov r7, #MMAP2
 	mov r0, #0
-	mov r1, #4096
+//	mov r1, =length
 	mov r2, #(PROC_READ | PROC_WRITE)
 	mov r3, #(MAP_ANONYMOUS | MAP_PRIVATE)
 	mov r4, #-1
 	mov r5, #0
 	svc #0
-
+//set pointer = value in r1
 	ldr r1, =pointer
+//store r0 at address of r1
 	str r0, [r1]
 
-	mov r4, r0
-	mov r0, #'0'
+//return to calling function - the memory pointer is in r0
+	bx lr
 
-.Loop:
-	strb r0, [r4], #1
-	add r0, r0, #1
-.Loop_condition:
-	cmp r0, #('z' + 1)
-	blt .Loop
+//string stuff
+//	mov r4, r0
+//	mov r0, #'0'
+//.Loop:
+//	strb r0, [r4], #1
+//^^ Store r0 in r4, then increment r4 by one
 
-	mov r0, #STDOUT
-	ldr r1, =pointer
-	ldr r1, [r1]
-	sub r2, r4, r1
-	mov r7, #WRITE
-	svc #0
+//	mov r7, #MUNMAP
+//	ldr r0, =pointer
+//	ldr r0, [r0]
+//	ldr r1, =length
+//	ldr r1, [r1]
+//	svc #0
 
-	mov r7, #MUNMAP
-	ldr r0, =pointer
-	ldr r0, [r0]
-	ldr r1, =length
-	ldr r1, [r1]
-	svc #0
+//	mov r7, #EXIT
+//	svc #0
 
-	mov r7, #EXIT
-	svc #0
