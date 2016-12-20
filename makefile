@@ -1,10 +1,13 @@
-all: atof
+all: main
 
-atof: atof.o
-	gcc -o $@ $+
+main: main.o write.o
+	gcc -o test.out main.o write.o
 
-atof.o: atof.s 
+write.o: write.s
+	as -o $@ $<
+
+main.o: main.s 
 	as -o $@ $<
 clean:
-	rm -vf atof *.o
+	rm -vf main *.o
 
