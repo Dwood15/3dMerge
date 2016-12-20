@@ -7,4 +7,12 @@ All the D-Level proficiencies were working, some C-level, and I needed to glue i
 
 With another 2-3 days I bet I could finish this project to 100%.
 
+This should take two files (even two exact same files), load them into distinct sections of memory, and then try and merge them by unique matching region ids 
+
+The 3d files will be merged by taking the base 3d files in memory, doubling the total size of the shapes, finding a translation distance, then translating the whole model of the second file the appropriate distance so that the "compatible" regions are aligned.
+
+The 3d files are in an abbreviated Halo PC intermediate format, known as .jms - most of the core features of the files are there save for uvw mapping and materials for regions.
+
+To run and debug - run make, which should output an executable file named: <INSERT_FINAL_NAME_HERE> then execute the debug.sh file. This will load a couple of relevant breakpoints and the bkpt file. The bkpt file is evidence of my ability to use gdb.
+
 -Dason Woodhouse

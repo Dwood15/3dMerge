@@ -1,5 +1,4 @@
 //From in-class presentation.
-.set O_WRONLY, 1
 .set O_RDONLY, 0
 .set O_CREAT, 64
 
@@ -14,18 +13,29 @@
 .set OPEN, 5
 .set CLOSE, 6
 
-.data
-//filename:
-//	.asciz "to_write.jms"
-//to_write:
-//	.ascii "Writing to file\n"
+.set EXIT, 1
+.set MMAP2, 192
+.set MUNMAP, 91
 
+.set PROC_READ, 1
+.set PROC_WRITE, 2
+.set MAP_PRIVATE, 2
+.set MAP_ANONYMOUS, 32
+
+.data
+filename:
+	.asciz "to_write.jms"
+to_read:
+	.skip 4096
 .text
-.global _load_file
-_load_file:
+//.global _load_file
+//_load_file:
+
+.global _start
+_start:
 //TODO: Save all callee-save registers
 	ldr r0, =filename
-	mov r1, #(O_WRONLY)
+	mov r1, #(O_RDONLY)
 	mov r2, #(S_IRUSR | S_IWUSR)
 	mov r7, #OPEN
 	svc #0 //Open the file for writing/reading
@@ -35,8 +45,8 @@ _load_file:
 	push {r0}
 
 read:
-	ldr r1, =to_print_text_write_file
-	mov r2, #24
+	ldr r1, =to_read
+	mov r2, #48
 	mov r7, #READ
 	svc #0
 
