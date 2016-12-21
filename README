@@ -3,10 +3,6 @@ The idea of the 3DMerge project was to take x number of 3d files with various re
 
 I couldn't get everything plugged together in time, so here's what I had working:
 
-All the D-Level proficiencies were working, some C-level, and I needed to glue it all together. I probably won't have time to finish them before grades are due, so here's what I have for now.
-
-With another week I bet I could finish this project to 100%.
-
 This should take two files (even two exact same files), load them into distinct sections of memory, and then try and merge them by unique matching region ids 
 
 The 3d files will be merged by taking the base 3d files in memory, doubling the total size of the shapes, finding a translation distance, then translating the whole model of the second file the appropriate distance so that the "compatible" regions are aligned.
@@ -14,5 +10,23 @@ The 3d files will be merged by taking the base 3d files in memory, doubling the 
 The 3d files are in an abbreviated Halo PC intermediate format, known as .jms - most of the core features of the files are there save for uvw mapping and materials for regions.
 
 To run and debug - run make, which should output an executable file named: <INSERT_FINAL_NAME_HERE> then execute the debug.sh file. This will load a couple of relevant breakpoints and the bkpt file. The bkpt file is evidence of my ability to use gdb.
+
+Grading notes:
+	Sorry about the mess of files. It's still heavily in progress. I'm still working on getting everything together.
+	At any rate, main.s, reader.s, mmap.s, makefile and bkpt are the most important files right now. They demonstrate that:
+		 I can compile using GCC (makefile)
+		 I know my GDB (D proficiencies 2-5) (bkpt file)
+		 Can use printf for both text and non-text data (atof.s)
+		 Can loop, global, use stack, if statement, static data and global variable (main.s)
+		 Execute system calls (reader.s and mmap.s)
+		 Compile with as/ld (reader.s and mmap.s compile with command: ld -o reader.out reader.o mmap.o) 
+		 reader.s will have a while loop - (while #read != 0) { keep reading }
+		 mmap.s takes an argument by value (in r1) and also returns a value (pointer address) in r0.
+
+	The actual project status:
+		 The project state itself can currently open a file and load it into static memory. It also allocates dynamic memory.
+		 Eventually the project will use scanf to get two file names for the final D proficiency, where the app will then load the files,
+		 Allocate space for merging them via mmap, and then merge the files using methods discussed above and in comments.
+
 
 -Dason Woodhouse

@@ -1,8 +1,12 @@
+//This file shows basically _all_ of the D profficiencies except for scanf, printf, system function call
+
 .data
+//Global variables:
 myvar:
   .word 4
 myvar2:
   .word 4
+//Constant data:
 firstFile:
   .asciz "exampledata\\first.jms"
 secondFile:
@@ -15,9 +19,9 @@ helloworld:
 return: .word 0
   .text
   .global loop_choice
-//initial function - r4 is my register
+//Function - r4 is my register
 loop_choice:
-  sub sp, sp, #8
+  sub sp, sp, #8  //subtraction
   str lr, [sp]
   sub sp, sp, #8
   str r4, [sp] //save the callee-save registers, and expand the stack
@@ -31,6 +35,7 @@ loop_pf:
   bl printf
   subs r4, r4, #1
   cmp r4, #0
+//if greater, use loop_pf
   bgt loop_pf
   bl end //exit the function
 
@@ -45,7 +50,7 @@ end:
   ldr r4, [sp] //load saved registers,
   add sp, sp, #8
   ldr lr, [sp]
-  add sp, sp, #8
+  add sp, sp, #8 //Addition
   bx lr
   //end of loop_choice function
 

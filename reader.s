@@ -24,6 +24,7 @@ file_size_location:
 .text
 //.global _load_file
 //	_load_file:
+//This function compiles with as and ld, per the C requirements
 .global _start
 	_start:
 	ldr r1, =maxFileSize
@@ -35,8 +36,9 @@ file_size_location:
 	str r0, [r2]
 
         mov r4, r0
-        mov r2, #0
+        mov r2, #0 //r2 is my i
         mov r0, #3
+//Essentially (for int i = 0; i < maxFilesize; i++)
 .Loop:
 //store r0 in [r4], then progress one
         strb r0, [r4], #1
@@ -45,6 +47,7 @@ file_size_location:
 .condition:
         cmp r2, r9
         blt .Loop
+
 	ldr r2, [r1]
 	//Save the returned memory location at =pointer
 	//_mmap returns address in r0.
@@ -73,7 +76,7 @@ _read_file:
 	mov r0, #0
 read:
 	ldr r1, =chunk_read_amount
-	mov r7, #READ
+	mov r7, #READ //system call
 	svc #0
 //While #READ returns > 0 bytes, we loop
 condition:

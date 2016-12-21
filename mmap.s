@@ -16,6 +16,7 @@ pointer:
 	.word 0
 .text
 //r1 is LENGTH, ENSURE THAT r1 is passed!
+//registers 
 .global _mmap
 _mmap:
 //.global _start
